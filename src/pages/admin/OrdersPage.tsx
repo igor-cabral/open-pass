@@ -280,7 +280,7 @@ export default function OrdersPage() {
                 <button className="text-primary text-xs font-semibold" onClick={() => handleNewLink(o.id, o.tickets[0].id)}>
                   Gerar novo link do ingresso
                 </button>
-                {newLink?.orderId === o.id && <div className="mt-3"><ClaimShare token={newLink.token} /></div>}
+                {newLink && newLink.orderId === o.id && <div className="mt-3"><ClaimShare token={newLink.token} /></div>}
               </div>
             )}
             <div className="flex justify-between items-center pt-2 mt-2 border-t border-line">
