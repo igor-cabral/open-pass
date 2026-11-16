@@ -1,0 +1,21 @@
+project_id = "vbdnzevsjvgozblmvscz"
+
+# As chaves "sb_publishable_..." não são JWT, então a verificação automática de JWT
+# do gateway fica desligada. Cada função autentica o usuário por conta própria
+# (ver supabase/functions/_shared/util.ts).
+[functions.staff-login]
+verify_jwt = false
+[functions.customer-login]
+verify_jwt = false
+[functions.claim-ticket]
+verify_jwt = false
+[functions.create-staff-user]
+verify_jwt = false
+[functions.admin-reset-password]
+verify_jwt = false
+[functions.admin-delete-staff-user]
+verify_jwt = false
+[functions.admin-edit-customer]
+verify_jwt = false
+[functions.request-password-reset]
+verify_jwt = false

@@ -1,0 +1,15 @@
+node_modules
+dist
+.env
+.env.local
+*.local
+.DS_Store
+supabase/.temp/
+*.tsbuildinfo
+vite.config.js
+vite.config.d.ts
+
+# PIN do admin e qualquer script com segredo (nunca commitar)
+supabase/local/
+.wrangler/
+.dev.vars
