@@ -17,5 +17,5 @@ export function Loading({ label = 'Carregando…' }: { label?: string }) {
 }
 
 export function Skeleton({ className = '' }: { className?: string }) {
-  return <div className={`animate-pulse rounded-lg bg-ink/10 ${className}`} />
+  return <div className={`skeleton rounded-lg ${className}`} />
 }

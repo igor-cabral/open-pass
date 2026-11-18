@@ -2,6 +2,7 @@ import type { MyTicket } from '@/types'
 import { formatCurrency, formatDate, formatDateTime, formatTime } from '@/utils/format'
 import { QrCode } from './QrCode'
 import { Badge } from '@/components/ui/Badge'
+import { AnimatedNumber } from '@/components/ui/AnimatedNumber'
 import { useAuth } from '@/contexts/AuthContext'
 import { useWakeLock } from '@/hooks/useWakeLock'
 
@@ -26,26 +27,35 @@ export function TicketStub({ ticket }: { ticket: MyTicket }) {
   const showCode = st.code && !!ticket.public_code
   useWakeLock(showCode)
 
+  const base = ticket.primary_color || '#0466FC'
+  const headerStyle = {
+    backgroundColor: base,
+    backgroundImage: `linear-gradient(135deg, ${base}, color-mix(in srgb, ${base} 62%, #000))`,
+  }
+
   const bannerTone: Record<Tone, string> = {
-    success: 'bg-primary-light text-primary-dark',
+    success: 'bg-success/15 text-success-ink',
     warning: 'bg-accent/20 text-accent-dark',
     danger: 'bg-danger/10 text-danger',
     neutral: 'bg-ink/5 text-ink/70',
   }
 
   return (
-    <div className="bg-surface rounded-ticket shadow-card overflow-hidden border border-line/60">
-      <div className="bg-primary text-white px-6 py-5" style={ticket.primary_color ? { backgroundColor: ticket.primary_color } : undefined}>
-        <div className="flex items-center justify-between gap-3">
-          <p className="text-xs uppercase tracking-widest text-white/70 font-semibold">{ticket.event_name}</p>
+    <div className="bg-surface rounded-[1.75rem] shadow-lift overflow-hidden border border-line/50 animate-ticket-in">
+      <div className="relative overflow-hidden text-white px-6 py-6" style={headerStyle}>
+        {/* círculos decorativos, no estilo dos cartões de carteira */}
+        <span className="pointer-events-none absolute -right-10 -top-12 h-40 w-40 rounded-full bg-white/10" />
+        <span className="pointer-events-none absolute -left-8 -bottom-16 h-36 w-36 rounded-full bg-black/10" />
+        <div className="relative flex items-center justify-between gap-3">
+          <p className="text-xs uppercase tracking-widest text-white/75 font-semibold">{ticket.event_name}</p>
           {ticket.logo_url && (
-            <img src={ticket.logo_url} alt="" className="h-16 w-16 object-contain rounded bg-white/10 p-0.5" />
+            <img src={ticket.logo_url} alt="" className="h-14 w-14 object-contain rounded-2xl bg-white/15 p-1" />
           )}
         </div>
-        <div className="flex items-end justify-between mt-2 gap-3">
+        <div className="relative flex items-end justify-between mt-4 gap-3">
           <div>
-            <p className="font-display font-bold text-2xl leading-none">{formatDate(ticket.event_date)}</p>
-            <p className="text-white/80 text-sm mt-1">{formatTime(ticket.event_time)} · {ticket.location}</p>
+            <p className="font-display font-bold text-3xl leading-none">{formatDate(ticket.event_date)}</p>
+            <p className="text-white/85 text-sm mt-1.5">{formatTime(ticket.event_time)} · {ticket.location}</p>
           </div>
           <Badge tone={st.tone}>{st.label}</Badge>
         </div>
@@ -67,18 +77,18 @@ export function TicketStub({ ticket }: { ticket: MyTicket }) {
         )}
 
         {ticket.has_credit && (
-          <div className="mb-6 rounded-2xl bg-primary-light px-4 py-4">
-            <p className="text-xs uppercase tracking-widest text-primary-dark/70 font-semibold">Saldo (ficha digital)</p>
-            <p className="font-display font-bold text-4xl text-primary-dark leading-tight">{formatCurrency(Number(ticket.credit_balance))}</p>
+          <div className="mb-6 rounded-3xl bg-gradient-to-br from-violet to-primary text-white px-5 py-5 shadow-glow">
+            <p className="text-xs uppercase tracking-widest text-white/75 font-semibold">Saldo (ficha digital)</p>
+            <p className="font-display font-bold text-5xl leading-tight tabular-nums"><AnimatedNumber value={Number(ticket.credit_balance)} format={formatCurrency} /></p>
             {ticket.spends.length > 0 && (
               <details className="mt-3 text-sm">
-                <summary className="cursor-pointer font-medium text-primary-dark">Ver consumo ({ticket.spends.length})</summary>
+                <summary className="cursor-pointer font-medium text-white/90">Ver consumo ({ticket.spends.length})</summary>
                 <ul className="mt-2 space-y-2">
                   {ticket.spends.map((sp, i) => (
                     <li key={i} className="flex justify-between gap-3">
-                      <span className="text-ink/70">
+                      <span className="text-white/85">
                         {sp.items.map((it) => `${it.quantity}× ${it.name}`).join(', ')}
-                        <span className="block text-xs text-ink/40">{formatDateTime(sp.at)}{sp.station_name ? ` · ${sp.station_name}` : ''}</span>
+                        <span className="block text-xs text-white/60">{formatDateTime(sp.at)}{sp.station_name ? ` · ${sp.station_name}` : ''}</span>
                       </span>
                       <span className="font-semibold whitespace-nowrap">− {formatCurrency(Number(sp.total))}</span>
                     </li>
@@ -109,7 +119,9 @@ export function TicketStub({ ticket }: { ticket: MyTicket }) {
         <div className="border-t border-line pt-5">
           {showCode ? (
             <div className="flex flex-col items-center gap-3">
-              <QrCode value={ticket.public_code!} size={300} />
+              <div className="rounded-3xl bg-white p-4 shadow-card ring-1 ring-line/60">
+                <QrCode value={ticket.public_code!} size={300} />
+              </div>
               <p className="text-xs text-ink/50 text-center">
                 Mostre este QR ao validador. A tela fica acesa enquanto o ingresso estiver aberto.
               </p>

@@ -5,7 +5,7 @@ Site: https://openpass.igorcabral.dev.br · Desenvolvido por [Igor Cabral](https
 Frontend estático (React + Vite + Tailwind, PWA) num Cloudflare Worker (ver `wrangler.jsonc`); dados, login e
 regras no Supabase (Postgres + Auth + Edge Functions). Sem servidor para manter.
 
-## Como funciona (v2)
+## Como funciona (v3.0)
 
 1. **Caixa só vende.** Escolhe os produtos, forma de pagamento e finaliza. O sistema
    gera o ingresso e um **link aleatório** (`/t/<token>`) com **QR code** na tela.
@@ -23,6 +23,10 @@ regras no Supabase (Postgres + Auth + Edge Functions). Sem servidor para manter.
 6. **Cortesias, fechamento de caixa, alerta de estoque (80%) e exportação CSV/PDF** para a prestação de contas.
 7. **Pagamento pendente** bloqueia a entrega até o admin/caixa confirmar.
 
+8. **Admin com vários papéis:** o administrador usa *Modo Caixa* e *Modo Validador* com o mesmo login (menu do topo).
+9. **Cortesias em lote:** aba *Cortesias* do painel gera ingressos grátis (um por nome) com motivo e link de resgate para cada convidado.
+10. **Painel ao vivo:** `/ao-vivo` mostra vendas, entregas e estoque em tempo real, em tela cheia, para o telão.
+
 Evento sem nenhum ponto criado funciona como antes: qualquer validador entrega tudo.
 
 ## Instalar
@@ -30,6 +34,12 @@ Evento sem nenhum ponto criado funciona como antes: qualquer validador entrega t
 Veja **[docs/INSTALACAO.md](docs/INSTALACAO.md)** (Supabase, Edge Functions, GitHub e Cloudflare Worker).
 
 Local: `npm install` e `npm run dev` (as variáveis já estão em `.env.development`).
+
+## Design (v3.0)
+
+Paleta da logo (azul, amarelo, verde, roxo), menu lateral no computador e barra de abas no celular,
+ingresso em cartão estilo carteira digital, números animados e transições curtas que respeitam
+`prefers-reduced-motion`. Tokens de cor em `src/styles/index.css`; componentes em `src/components/ui/`.
 
 ## Segurança
 

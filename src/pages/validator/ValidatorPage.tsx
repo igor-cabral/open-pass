@@ -257,7 +257,7 @@ export default function ValidatorPage() {
             flash.kind === 'ok' ? 'bg-[#12A150]' : 'bg-[#D62839]'
           }`}
         >
-          <span className="text-8xl leading-none">{flash.kind === 'ok' ? '✓' : '✕'}</span>
+          <span className="text-8xl leading-none animate-check-pop">{flash.kind === 'ok' ? '✓' : '✕'}</span>
           <span className="font-display font-bold text-4xl">{flash.title}</span>
           {flash.detail && <span className="text-lg text-white/90 max-w-sm">{flash.detail}</span>}
           <span className="text-sm text-white/70 mt-4">Toque para fechar</span>

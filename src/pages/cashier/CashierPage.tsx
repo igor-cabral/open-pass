@@ -336,7 +336,7 @@ export default function CashierPage() {
                 >
                   −
                 </button>
-                <span className="w-8 text-center font-display font-bold text-2xl">{qty}</span>
+                <span key={qty} className="w-8 text-center font-display font-bold text-2xl tabular-nums animate-pop-in">{qty}</span>
                 <button
                   type="button"
                   aria-label={`Aumentar ${p.name}`}
@@ -352,7 +352,7 @@ export default function CashierPage() {
         })}
       </Card>
 
-      <Card className="p-4 flex items-center justify-between sticky bottom-3 z-10 shadow-card border border-primary/30">
+      <Card className="p-4 flex items-center justify-between sticky bottom-24 md:bottom-3 z-10 shadow-card border border-primary/30">
         <span className="font-display font-semibold">{courtesy ? 'Cortesia' : 'Total'}</span>
         <span className="text-right">
           <span className="font-display font-bold text-3xl text-primary-dark">{formatCurrency(courtesy ? 0 : total)}</span>

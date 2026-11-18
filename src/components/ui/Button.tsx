@@ -11,17 +11,17 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const variantClasses: Record<Variant, string> = {
-  primary: 'bg-primary text-white hover:bg-primary-dark active:scale-[0.98]',
-  secondary: 'bg-accent text-ink hover:bg-accent-dark active:scale-[0.98]',
-  outline: 'border border-line bg-surface text-ink hover:bg-primary-light active:scale-[0.98]',
-  danger: 'bg-danger text-white hover:opacity-90 active:scale-[0.98]',
+  primary: 'bg-primary text-white shadow-glow hover:brightness-110 active:scale-[0.97]',
+  secondary: 'bg-accent text-[#20242C] hover:brightness-105 active:scale-[0.97]',
+  outline: 'border border-line bg-surface text-ink hover:bg-primary-light active:scale-[0.97]',
+  danger: 'bg-danger text-white hover:brightness-110 active:scale-[0.97]',
   ghost: 'text-ink hover:bg-primary-light',
 }
 
 const sizeClasses: Record<Size, string> = {
-  sm: 'text-sm px-3 py-1.5 rounded-lg',
-  md: 'text-base px-4 py-2.5 rounded-xl',
-  lg: 'text-lg px-6 py-4 rounded-2xl',
+  sm: 'text-sm px-3.5 py-2 rounded-xl',
+  md: 'text-base px-5 py-3 rounded-2xl',
+  lg: 'text-lg px-6 py-4 rounded-2xl min-h-[3.5rem]',
 }
 
 export const Button = forwardRef<HTMLButtonElement, Props>(function Button(

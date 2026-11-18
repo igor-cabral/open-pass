@@ -65,7 +65,7 @@ export default function MyTicketsPage() {
     if (!ticket) { setView('events'); return null }
     return (
       <div className="space-y-4 max-w-md mx-auto">
-        <button className="text-sm text-primary font-medium" onClick={() => setView('tickets')}>
+        <button className="text-sm text-primary font-semibold inline-flex items-center gap-1" onClick={() => setView('tickets')}>
           ← Voltar aos tickets deste evento
         </button>
         <TicketStub ticket={ticket} />
@@ -83,7 +83,7 @@ export default function MyTicketsPage() {
           ← Voltar aos meus eventos
         </button>
         <h1 className="font-display font-bold text-xl">{group.first.event_name}</h1>
-        <div className="space-y-2">
+        <div className="space-y-2 stagger">
           {group.tickets.map((t) => {
             const totalItens = t.items.reduce((s, i) => s + i.quantity_purchased, 0)
             return (
@@ -112,15 +112,15 @@ export default function MyTicketsPage() {
   return (
     <div className="space-y-6 max-w-md mx-auto">
       <h1 className="font-display font-bold text-2xl">Meus eventos</h1>
-      <div className="grid gap-3">
+      <div className="grid gap-4 stagger">
         {eventGroups.map(({ eventId, tickets: ts, first }) => (
           <Card
             key={eventId}
             hoverable
-            className="p-0 overflow-hidden cursor-pointer"
+            className="p-0 overflow-hidden cursor-pointer rounded-3xl"
             onClick={() => { setSelectedEventId(eventId); setView('tickets') }}
           >
-            <div className="px-5 py-4 text-white flex items-center gap-3 bg-primary" style={first.primary_color ? { backgroundColor: first.primary_color } : undefined}>
+            <div className="px-5 py-5 text-white flex items-center gap-3 bg-primary" style={{ backgroundColor: first.primary_color || '#0466FC', backgroundImage: `linear-gradient(135deg, ${first.primary_color || '#0466FC'}, color-mix(in srgb, ${first.primary_color || '#0466FC'} 62%, #000))` }}>
               {first.logo_url && <img src={first.logo_url} alt="" className="h-9 w-9 object-contain rounded bg-white/10 p-0.5" />}
               <div className="flex-1">
                 <p className="font-display font-semibold">{first.event_name}</p>

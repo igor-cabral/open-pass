@@ -50,27 +50,49 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-paper px-4">
-      <div className="w-full max-w-sm">
-        <div className="text-center mb-8">
+    <div className="min-h-screen brand-glow flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-5xl lg:grid lg:grid-cols-2 lg:gap-16 lg:items-center">
+        {/* Vitrine (só em tela grande) */}
+        <div className="hidden lg:block">
+          <div className="grid grid-cols-2 gap-3 w-40 mb-8" aria-hidden>
+            <span className="h-[4.5rem] rounded-2xl rounded-br-3xl bg-accent animate-pop-in" style={{ animationDelay: '0ms' }} />
+            <span className="h-[4.5rem] rounded-2xl rounded-bl-3xl bg-primary animate-pop-in" style={{ animationDelay: '80ms' }} />
+            <span className="h-[4.5rem] rounded-2xl rounded-tr-3xl bg-violet animate-pop-in" style={{ animationDelay: '160ms' }} />
+            <span className="h-[4.5rem] rounded-2xl rounded-tl-3xl bg-success animate-pop-in" style={{ animationDelay: '240ms' }} />
+          </div>
+          <h2 className="font-display font-bold text-5xl leading-[1.05] tracking-tight">
+            Ingressos e fichas<br />
+            <span className="text-primary">sem fila, sem troco.</span>
+          </h2>
+          <p className="text-ink/60 text-lg mt-5 max-w-md">
+            Venda no caixa, entregue com um toque e acompanhe tudo em tempo real.
+          </p>
+        </div>
+
+        <div className="w-full max-w-sm mx-auto animate-sheet-up">
+        <div className="text-center mb-8 lg:hidden">
           <h1 className="sr-only">OpenPass</h1>
           <OpenPassLogo className="h-20 mx-auto" />
           <p className="text-ink/60 text-sm mt-3">Ingressos digitais para o seu evento</p>
         </div>
+        <div className="hidden lg:block mb-6">
+          <h1 className="sr-only">OpenPass</h1>
+          <OpenPassLogo className="h-12" />
+        </div>
 
-        <Card className="p-6">
-          <div className="flex rounded-xl bg-ink/5 p-1 mb-5">
+        <Card className="p-6 shadow-lift">
+          <div className="flex rounded-2xl bg-ink/5 p-1 mb-5">
             <button
               type="button"
               onClick={() => setMode('customer')}
-              className={`flex-1 rounded-lg py-2 text-sm font-semibold transition-colors ${mode === 'customer' ? 'bg-surface shadow-sm' : 'text-ink/50'}`}
+              className={`flex-1 rounded-xl py-2.5 text-sm font-semibold transition-all ${mode === 'customer' ? 'bg-surface shadow-sm' : 'text-ink/50'}`}
             >
               Sou cliente
             </button>
             <button
               type="button"
               onClick={() => setMode('staff')}
-              className={`flex-1 rounded-lg py-2 text-sm font-semibold transition-colors ${mode === 'staff' ? 'bg-surface shadow-sm' : 'text-ink/50'}`}
+              className={`flex-1 rounded-xl py-2.5 text-sm font-semibold transition-all ${mode === 'staff' ? 'bg-surface shadow-sm' : 'text-ink/50'}`}
             >
               Equipe do evento
             </button>
@@ -123,6 +145,7 @@ export default function LoginPage() {
           )}
         </Card>
         <DevCredit className="mt-6" />
+        </div>
       </div>
     </div>
   )

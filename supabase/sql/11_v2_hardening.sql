@@ -67,3 +67,15 @@ alter default privileges for role postgres in schema public revoke all on sequen
 -- fazem mais parte do app (QR rotativo foi removido) — ficam sem acesso:
 --   get_rotating_ticket_token, resolve_rotating_token (se existirem)
 -- Nada a fazer: o passo 1 já as deixou fechadas.
+
+-- 6) permissões de tabela que faltavam em instalações novas
+-- order_items tem política de leitura (03_policies.sql) mas nunca recebeu o GRANT;
+-- o app lê itens do pedido embutidos em orders (relatórios e tela de pedidos).
+grant select on public.order_items to authenticated;
+
+-- A service_role (Edge Functions) precisa ler/gravar todas as tabelas.
+grant usage on schema public to service_role;
+grant all on all tables in schema public to service_role;
+grant all on all sequences in schema public to service_role;
+grant execute on all functions in schema public to service_role;
+notify pgrst, 'reload schema';

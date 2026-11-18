@@ -24,6 +24,14 @@ export default {
           dark: 'rgb(var(--color-accent-dark) / <alpha-value>)',
         },
         danger: 'rgb(var(--color-danger) / <alpha-value>)',
+        success: {
+          DEFAULT: 'rgb(var(--color-success) / <alpha-value>)',
+          ink: 'rgb(var(--color-success-ink) / <alpha-value>)',
+        },
+        violet: {
+          DEFAULT: 'rgb(var(--color-violet) / <alpha-value>)',
+          ink: 'rgb(var(--color-violet-ink) / <alpha-value>)',
+        },
         line: 'rgb(var(--color-line) / <alpha-value>)',
       },
       fontFamily: {
@@ -35,7 +43,9 @@ export default {
         ticket: '1.25rem',
       },
       boxShadow: {
-        card: '0 1px 2px rgba(18,35,31,0.06), 0 8px 24px -8px rgba(18,35,31,0.12)',
+        card: '0 1px 2px rgba(20,28,45,0.05), 0 12px 32px -14px rgba(20,28,45,0.16)',
+        lift: '0 2px 4px rgba(20,28,45,0.06), 0 20px 40px -16px rgba(20,28,45,0.28)',
+        glow: '0 10px 24px -10px rgb(var(--color-primary) / 0.65)',
       },
       keyframes: {
         fadeInUp: {
@@ -46,6 +56,18 @@ export default {
           '0%': { opacity: '0', transform: 'scale(0.92)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
         },
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+        ticketIn: {
+          '0%': { opacity: '0', transform: 'translateY(18px) scale(0.97)' },
+          '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+        },
+        sheetUp: {
+          '0%': { opacity: '0', transform: 'translateY(24px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
         checkPop: {
           '0%': { transform: 'scale(0)' },
           '60%': { transform: 'scale(1.15)' },
@@ -55,6 +77,9 @@ export default {
       animation: {
         'fade-in-up': 'fadeInUp 0.28s ease-out both',
         'pop-in': 'popIn 0.2s ease-out both',
+        shimmer: 'shimmer 1.6s linear infinite',
+        'ticket-in': 'ticketIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both',
+        'sheet-up': 'sheetUp 0.28s cubic-bezier(0.22, 1, 0.36, 1) both',
         'check-pop': 'checkPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both',
       },
     },

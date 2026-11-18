@@ -233,3 +233,32 @@ export interface StockAlert {
   remaining: number
   pct: number
 }
+export interface LiveDashboard {
+  totals: {
+    orders: number
+    revenue: number
+    pending: number
+    courtesies: number
+    tickets: number
+    items_sold: number
+    items_delivered: number
+    credit_sold: number
+    credit_spent: number
+    credit_outstanding: number
+    server_time: string
+  }
+  by_product: { product_name: string; stock_limit: number | null; sold: number; delivered: number }[]
+  by_station: { station_name: string; items: number }[]
+  recent_sales: {
+    at: string
+    order_number: number
+    buyer_name: string
+    total: number
+    payment_method: string
+    payment_status: string
+    is_courtesy: boolean
+    cashier_name: string
+  }[]
+  recent_deliveries: { at: string; station_name: string; validator_name: string; summary: string | null; kind: 'item' | 'credit' }[]
+  by_hour: { hour: string; orders: number; amount: number }[]
+}

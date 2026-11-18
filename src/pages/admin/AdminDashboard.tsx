@@ -9,6 +9,7 @@ const tabs = [
   { to: '/admin', label: 'Eventos', end: true },
   { to: '/admin/equipe', label: 'Equipe' },
   { to: '/admin/usuarios', label: 'Usuários' },
+  { to: '/admin/cortesias', label: 'Cortesias' },
   { to: '/admin/relatorios', label: 'Relatórios' },
   { to: '/admin/senhas', label: 'Senhas' },
   { to: '/admin/auditoria', label: 'Auditoria' },
@@ -72,15 +73,15 @@ export default function AdminDashboard() {
     <div className="space-y-6">
       <div>
         <h1 className="font-display font-bold text-2xl mb-3">Painel administrativo</h1>
-        <div className="flex gap-2 border-b border-line">
+        <div className="flex gap-1.5 overflow-x-auto whitespace-nowrap pb-1 -mx-1 px-1">
           {tabs.map((t) => (
             <NavLink
               key={t.to}
               to={t.to}
               end={t.end}
               className={({ isActive }) =>
-                `relative px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
-                  isActive ? 'border-primary text-primary-dark' : 'border-transparent text-ink/50 hover:text-ink'
+                `relative px-4 py-2 text-sm font-semibold rounded-full transition-all ${
+                  isActive ? 'bg-primary text-white shadow-glow' : 'bg-ink/5 text-ink/60 hover:bg-ink/10 hover:text-ink'
                 }`
               }
             >

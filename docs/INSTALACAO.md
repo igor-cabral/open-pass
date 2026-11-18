@@ -26,8 +26,9 @@ No painel > **SQL Editor**, rode **na ordem**, um por vez (cole o conteúdo e cl
 1. **Authentication > Sign In / Providers**: desligue **"Allow new users to sign up"** (contas são criadas só pelas Edge Functions).
 2. **Authentication > Users > Add user > Create new user**: e-mail `staff.admin@eventix.local`, senha forte, marque **Auto Confirm User**. Copie o **User UID**.
 3. Abra `supabase/sql/12_seed_admin.sql`, troque `COLE_O_UUID_AQUI` pelo UUID e rode.
-4. Rode `supabase/local/set_admin_pin.sql` (já contém o seu PIN; esse arquivo **não vai para o Git**).
-5. Login no app: usuário `admin` + a senha do passo 2; depois o app pede o PIN.
+4. Rode `supabase/sql/13_live_panel.sql` (painel ao vivo).
+5. Rode `supabase/local/set_admin_pin.sql` (já contém o seu PIN; esse arquivo **não vai para o Git**).
+6. Login no app: usuário `admin` + a senha do passo 2; depois o app pede o PIN.
 
 ## 3. Supabase — Edge Functions
 

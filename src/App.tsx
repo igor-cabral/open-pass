@@ -28,13 +28,27 @@ import CustomersPage from '@/pages/admin/CustomersPage'
 import ReportsPage from '@/pages/admin/ReportsPage'
 import PasswordResetsPage from '@/pages/admin/PasswordResetsPage'
 import AuditLogPage from '@/pages/admin/AuditLogPage'
+import CourtesiesPage from '@/pages/admin/CourtesiesPage'
+import LivePanelPage from '@/pages/admin/LivePanelPage'
+
+type NavEntry = { to: string; label: string; icon: string }
+
+// O admin também pode trabalhar como caixa ou validador com o mesmo login:
+// estes atalhos aparecem em todas as telas dele.
+const ADMIN_NAV: NavEntry[] = [
+  { to: '/admin', label: 'Painel', icon: 'dashboard' },
+  { to: '/caixa', label: 'Modo Caixa', icon: 'receipt' },
+  { to: '/validador', label: 'Modo Validador', icon: 'scan' },
+  { to: '/ao-vivo', label: 'Ao vivo', icon: 'tv' },
+  { to: '/perfil', label: 'Perfil', icon: 'user' },
+]
 
 function CustomerShell() {
   return (
     <AppShell
       navItems={[
-        { to: '/meus-tickets', label: 'Meus tickets', icon: '🎫' },
-        { to: '/perfil', label: 'Perfil', icon: '👤' },
+        { to: '/meus-tickets', label: 'Meus tickets', icon: 'ticket' },
+        { to: '/perfil', label: 'Perfil', icon: 'user' },
       ]}
     >
       <MyTicketsPage />
@@ -43,27 +57,44 @@ function CustomerShell() {
 }
 
 const CASHIER_NAV = [
-  { to: '/caixa', label: 'Vender', icon: '🧾' },
-  { to: '/caixa/fechamento', label: 'Fechamento', icon: '💰' },
-  { to: '/perfil', label: 'Perfil', icon: '👤' },
+  { to: '/caixa', label: 'Vender', icon: 'receipt' },
+  { to: '/caixa/fechamento', label: 'Fechamento', icon: 'wallet' },
+  { to: '/perfil', label: 'Perfil', icon: 'user' },
 ]
 
 function CashierShell({ closing = false }: { closing?: boolean }) {
+  const { profile } = useAuth()
+  const nav: NavEntry[] =
+    profile?.role === 'admin'
+      ? [
+          { to: '/admin', label: '← Painel admin', icon: 'dashboard' },
+          { to: '/caixa', label: 'Vender', icon: 'receipt' },
+          { to: '/caixa/fechamento', label: 'Fechamento', icon: 'wallet' },
+          { to: '/validador', label: 'Modo Validador', icon: 'scan' },
+        ]
+      : CASHIER_NAV
   return (
-    <AppShell navItems={CASHIER_NAV}>
+    <AppShell navItems={nav}>
       {closing ? <CashierClosingPage /> : <CashierPage />}
     </AppShell>
   )
 }
 
 function ValidatorShell() {
+  const { profile } = useAuth()
+  const nav: NavEntry[] =
+    profile?.role === 'admin'
+      ? [
+          { to: '/admin', label: '← Painel admin', icon: 'dashboard' },
+          { to: '/validador', label: 'Validar', icon: 'scan' },
+          { to: '/caixa', label: 'Modo Caixa', icon: 'receipt' },
+        ]
+      : [
+          { to: '/validador', label: 'Validar', icon: 'scan' },
+          { to: '/perfil', label: 'Perfil', icon: 'user' },
+        ]
   return (
-    <AppShell
-      navItems={[
-        { to: '/validador', label: 'Validar', icon: '📷' },
-        { to: '/perfil', label: 'Perfil', icon: '👤' },
-      ]}
-    >
+    <AppShell navItems={nav}>
       <ValidatorPage />
     </AppShell>
   )
@@ -71,12 +102,7 @@ function ValidatorShell() {
 
 function AdminShell() {
   return (
-    <AppShell
-      navItems={[
-        { to: '/admin', label: 'Painel', icon: '📊' },
-        { to: '/perfil', label: 'Perfil', icon: '👤' },
-      ]}
-    >
+    <AppShell navItems={ADMIN_NAV}>
       <AdminDashboard />
     </AppShell>
   )
@@ -88,18 +114,15 @@ function AdminShell() {
 function ProfileShell() {
   const { profile } = useAuth()
   const navByRole: Record<string, { to: string; label: string; icon: string }[]> = {
-    admin: [
-      { to: '/admin', label: 'Painel', icon: '📊' },
-      { to: '/perfil', label: 'Perfil', icon: '👤' },
-    ],
+    admin: ADMIN_NAV,
     cashier: CASHIER_NAV,
     validator: [
-      { to: '/validador', label: 'Validar', icon: '📷' },
-      { to: '/perfil', label: 'Perfil', icon: '👤' },
+      { to: '/validador', label: 'Validar', icon: 'scan' },
+      { to: '/perfil', label: 'Perfil', icon: 'user' },
     ],
     customer: [
-      { to: '/meus-tickets', label: 'Meus tickets', icon: '🎫' },
-      { to: '/perfil', label: 'Perfil', icon: '👤' },
+      { to: '/meus-tickets', label: 'Meus tickets', icon: 'ticket' },
+      { to: '/perfil', label: 'Perfil', icon: 'user' },
     ],
   }
   return (
@@ -177,6 +200,16 @@ export default function App() {
             }
           />
 
+          {/* telão da coordenação: tela cheia, sem menu */}
+          <Route
+            path="/ao-vivo"
+            element={
+              <ProtectedRoute roles={['admin']}>
+                <LivePanelPage />
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="/admin"
             element={
@@ -191,6 +224,7 @@ export default function App() {
             <Route path="relatorios" element={<ReportsPage />} />
             <Route path="senhas" element={<PasswordResetsPage />} />
             <Route path="auditoria" element={<AuditLogPage />} />
+            <Route path="cortesias" element={<CourtesiesPage />} />
             <Route path="eventos/:eventId/produtos" element={<ProductsPage />} />
             <Route path="eventos/:eventId/pontos" element={<StationsPage />} />
             <Route path="eventos/:eventId/pedidos" element={<OrdersPage />} />

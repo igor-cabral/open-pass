@@ -253,3 +253,10 @@ export async function stockAlerts(threshold = 0.8): Promise<import('@/types').St
   if (error) throw new Error(error.message)
   return data as import('@/types').StockAlert[]
 }
+
+// Painel ao vivo (telão): números do evento em tempo real. Só admin.
+export async function liveDashboard(eventId: string): Promise<import('@/types').LiveDashboard> {
+  const { data, error } = await supabase.rpc('live_dashboard', { p_event_id: eventId })
+  if (error) throw new Error(error.message)
+  return data as import('@/types').LiveDashboard
+}
