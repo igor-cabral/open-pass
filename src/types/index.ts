@@ -53,7 +53,11 @@ export interface TicketItemView {
 export interface MyTicket {
   id: string
   status: TicketStatus
-  public_code: string | null
+  /** Segredo do QR ao vivo (só no dia do evento). O código fixo do ingresso nunca vai ao cliente. */
+  qr_secret: string | null
+  /** Hora do servidor (segundos) no momento da resposta, e a hora local em que chegou. */
+  server_now: number
+  fetched_at: number
   locked: boolean
   ended: boolean
   blocked_reason: string | null

@@ -4,13 +4,21 @@ import type { MyStation, MyTicket, RedeemResult, SpendResult, ValidationTicket }
 export async function getMyTickets(): Promise<MyTicket[]> {
   const { data, error } = await supabase.rpc('get_my_tickets')
   if (error) throw new Error(error.message)
-  return data as MyTicket[]
+  const fetchedAt = Date.now()
+  return (data as Omit<MyTicket, 'fetched_at'>[]).map((t) => ({ ...t, fetched_at: fetchedAt }))
 }
 
 export async function getMyStation(eventId: string): Promise<MyStation> {
   const { data, error } = await supabase.rpc('get_my_station', { p_event_id: eventId })
   if (error) throw new Error(error.message)
   return data as MyStation
+}
+
+// Valida o QR ao vivo lido pela câmera (assinatura + prazo) e devolve o código do ingresso.
+export async function resolveLiveQr(scan: string, eventId: string): Promise<string> {
+  const { data, error } = await supabase.rpc('resolve_live_qr', { p_scan: scan, p_event_id: eventId })
+  if (error) throw new Error(error.message)
+  return data as string
 }
 
 export async function getTicketForValidation(publicCode: string, eventId: string): Promise<ValidationTicket> {

@@ -26,6 +26,7 @@ regras no Supabase (Postgres + Auth + Edge Functions). Sem servidor para manter.
 8. **Admin com vários papéis:** o administrador usa *Modo Caixa* e *Modo Validador* com o mesmo login (menu do topo).
 9. **Cortesias em lote:** aba *Cortesias* do painel gera ingressos grátis (um por nome) com motivo e link de resgate para cada convidado.
 10. **Painel ao vivo:** `/ao-vivo` mostra vendas, entregas e estoque em tempo real, em tela cheia, para o telão.
+11. **QR ao vivo (anti-print):** o QR do cliente é assinado (HMAC) e muda a cada 15 s; o servidor recusa QR com mais de ~45 s. A tela tem relógio em segundos, borda e barras animadas: um print fica parado e o validador percebe. O código fixo do ingresso não é enviado ao celular do cliente.
 
 Evento sem nenhum ponto criado funciona como antes: qualquer validador entrega tudo.
 

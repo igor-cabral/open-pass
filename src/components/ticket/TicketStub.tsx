@@ -1,6 +1,6 @@
 import type { MyTicket } from '@/types'
 import { formatCurrency, formatDate, formatDateTime, formatTime } from '@/utils/format'
-import { QrCode } from './QrCode'
+import { LiveQr } from './LiveQr'
 import { Badge } from '@/components/ui/Badge'
 import { AnimatedNumber } from '@/components/ui/AnimatedNumber'
 import { useAuth } from '@/contexts/AuthContext'
@@ -24,7 +24,7 @@ function resolveState(t: MyTicket): { label: string; tone: Tone; icon: string; m
 export function TicketStub({ ticket }: { ticket: MyTicket }) {
   const { profile } = useAuth()
   const st = resolveState(ticket)
-  const showCode = st.code && !!ticket.public_code
+  const showCode = st.code && !!ticket.qr_secret
   useWakeLock(showCode)
 
   const base = ticket.primary_color || '#0466FC'
@@ -119,11 +119,10 @@ export function TicketStub({ ticket }: { ticket: MyTicket }) {
         <div className="border-t border-line pt-5">
           {showCode ? (
             <div className="flex flex-col items-center gap-3">
-              <div className="rounded-3xl bg-white p-4 shadow-card ring-1 ring-line/60">
-                <QrCode value={ticket.public_code!} size={300} />
-              </div>
-              <p className="text-xs text-ink/50 text-center">
-                Mostre este QR ao validador. A tela fica acesa enquanto o ingresso estiver aberto.
+              <LiveQr ticketId={ticket.id} secret={ticket.qr_secret!} serverNow={ticket.server_now} fetchedAt={ticket.fetched_at} />
+              <p className="text-xs text-ink/50 text-center max-w-[18rem]">
+                Este QR muda a cada 15 segundos e só vale ao vivo: print ou foto não funcionam.
+                Mostre esta tela ao validador; ela fica acesa enquanto o ingresso estiver aberto.
               </p>
             </div>
           ) : (

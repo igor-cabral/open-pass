@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { BrowserMultiFormatReader, IScannerControls } from '@zxing/browser'
 import { supabase } from '@/lib/supabaseClient'
-import { getTicketForValidation, redeemTicketItems, getMyStation, undoRedemption, spendCredit, undoCreditSpend } from '@/services/tickets'
+import { getTicketForValidation, resolveLiveQr, redeemTicketItems, getMyStation, undoRedemption, spendCredit, undoCreditSpend } from '@/services/tickets'
 import { listMyEvents } from '@/services/events'
 import type { EventItem, MyStation, ValidationTicket } from '@/types'
 import { Card } from '@/components/ui/Card'
@@ -72,7 +72,7 @@ export default function ValidatorPage() {
         if (result) {
           controls.stop()
           setCameraOn(false)
-          void lookupTicket(result.getText())
+          void scanTicket(result.getText())
         }
       })
       controlsRef.current = controls
@@ -85,6 +85,28 @@ export default function ValidatorPage() {
   function stopCamera() {
     controlsRef.current?.stop()
     setCameraOn(false)
+  }
+
+  // QR lido pela câmera: precisa ser o QR ao vivo (assinado, muda a cada 15 s).
+  // Um QR parado (print/foto antiga) é recusado.
+  async function scanTicket(text: string) {
+    const t = text.trim()
+    if (!eventId) {
+      toast.error('Selecione o evento primeiro.')
+      return
+    }
+    if (!/^OP1\./i.test(t)) {
+      setFlash({ kind: 'error', title: 'QR desatualizado', detail: 'Peça ao cliente para abrir o ingresso no OpenPass e mostrar o QR ao vivo.' })
+      return
+    }
+    setLoadingTicket(true)
+    try {
+      const code = await resolveLiveQr(t, eventId)
+      await lookupTicket(code)
+    } catch (err) {
+      setFlash({ kind: 'error', title: 'QR recusado', detail: (err as Error).message })
+      setLoadingTicket(false)
+    }
   }
 
   async function lookupTicket(code: string) {
@@ -119,7 +141,8 @@ export default function ValidatorPage() {
   function handleManualSubmit(e: React.FormEvent) {
     e.preventDefault()
     if (!manualCode.trim()) return
-    void lookupTicket(manualCode.trim())
+    const v = manualCode.trim()
+    void (/^OP1\./i.test(v) ? scanTicket(v) : lookupTicket(v))
     setManualCode('')
   }
 
@@ -297,6 +320,9 @@ export default function ValidatorPage() {
                 📷 Ativar câmera
               </Button>
             )}
+            <p className="text-xs text-ink/50 text-center">
+              O QR do cliente é ao vivo: o relógio e as barras coloridas precisam estar se mexendo. Se a tela estiver parada, é print.
+            </p>
           </Card>
 
           <form onSubmit={handleManualSubmit} className="space-y-2">

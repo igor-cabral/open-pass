@@ -224,3 +224,13 @@ a, button {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* QR ao vivo (anti-print): tudo aqui se move, então um print fica visivelmente parado */
+.live-border {
+  background: linear-gradient(120deg, #0466fc, #8434bc, #12c45c, #fdc30b, #0466fc);
+  background-size: 300% 100%;
+  animation: liveBorder 3s linear infinite;
+}
+@keyframes liveBorder { from { background-position: 0% 0; } to { background-position: 300% 0; } }
+.live-bar { transform-origin: bottom; animation: liveBar 1.3s ease-in-out infinite; }
+@keyframes liveBar { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.45); } }
